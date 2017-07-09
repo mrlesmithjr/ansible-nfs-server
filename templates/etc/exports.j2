@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+{% if nfs_server_exports is defined %}
+{%   for item1 in nfs_server_exports %}
+{{ item1['path'] }} {% for item2 in item1['access'] %}{{ item2['hostname'] }}({{ item2['options']|join(',') }}){% if not loop.last %} {% endif %}{% endfor %}
+
+{%   endfor %}
+{% endif %}

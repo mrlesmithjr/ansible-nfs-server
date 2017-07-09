@@ -1,0 +1,41 @@
+---
+# defaults file for ansible-nfs-server
+
+# Define export info
+## Define any exports to be available to clients
+##
+### hostname
+#### define by hostname, fqdn, ip address, ip subnet or * for all
+####
+### options
+#### define any options or leave commented out
+####
+### mode
+#### define the folder permissions to set which also apply to client mounts
+nfs_server_exports: []
+  # - export:
+  #   access:
+  #     # - hostname: '172.16.24.0/24'
+  #     #   options:
+  #     #     - 'ro'
+  #     #     - 'sync'
+  #     #     - 'no_subtree_check'
+  #     #     - 'no_root_squash'
+  #     - hostname: '192.168.250.0/24'
+  #       options:
+  #         - 'rw'
+  #         - 'sync'
+  #         - 'no_subtree_check'
+  #         - 'no_root_squash'
+  #   mode: "u=rwx,g=rx,o=rx"
+  #   path: '/opt/nfs/test1'
+  # - export:
+  #   access:
+  #     - hostname: '*'
+  #       options:
+  #         - 'rw'
+  #         - 'sync'
+  #         - 'no_subtree_check'
+  #         - 'no_root_squash'
+  #   mode: "u=rwx,g=rwx,o=rwx"
+  #   path: '/opt/nfs/test2'
