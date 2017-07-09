@@ -1,4 +1,18 @@
 ---
+- name: debian | Configuring NFS Server
+  template:
+    src: "etc/default/{{ item }}.j2"
+    dest: "/etc/default/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "u=rw,g=r,o=r"
+  become: true
+  notify: "restart {{ _nfs_server_service }}"
+  with_items:
+    - 'nfs-common'
+    - 'nfs-kernel-server'
+  when: ansible_os_family == "Debian"
+
 - name: config | Ensuring All Paths Exist
   file:
     dest: "{{ item['path'] }}"
