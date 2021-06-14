@@ -87,6 +87,11 @@ nfs_server_rpcnfsdopts: []
   # - '--no-tcp'
   # - '--no-udp'
 
+# mandatory for RHEL8 to provide the fsid attribute
+# default choice is the uuid of the backend filesystem.
+
+fsid: uuid
+
 # Options for rpc.statd.
 #   Should rpc.statd listen on a specific port? This is especially useful
 #   when you have a port-based firewall. To use a fixed port, set this
