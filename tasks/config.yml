@@ -24,12 +24,40 @@
   with_items: '{{ nfs_server_exports }}'
   when: nfs_server_exports is defined
 
+- name: Backup /etc/exports
+  ansible.builtin.copy:
+    src: /etc/exports
+    dest: /etc/exports_bck
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: yes
+
 - name: config | Configuring /etc/exports
-  template:
-    src: "etc/exports.j2"
-    dest: "/etc/exports"
-    owner: "root"
-    group: "root"
-    mode: "u=rw,g=r,o=r"
+  blockinfile:
+    dest: /etc/exports
+    block: "{{ lookup('template', 'etc/exports.j2', template_vars=dict(tpl=item)) }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR {{ item['path'] }}"
+    create: yes
+    mode: "{{ item['mode'] }}"
+  with_items: '{{ nfs_server_exports }}'
   become: true
   notify: "restart {{ _nfs_server_service }}"
+
+- name: Effecting changes in /etc/exports
+  ansible.builtin.command: 'exportfs -r'
+  register: exportfs_output
+  ignore_errors: true
+
+- name: Reverting /etc/exports if failed
+  ansible.builtin.copy:
+    src: /etc/exports_bck
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: yes
+  when: "exportfs_output.stderr != ''"
+
+- fail: msg="/etc/exports could not be validated"
+  when: "exportfs_output.stderr != ''"
