@@ -23,7 +23,7 @@
 
 - name: set-facts | Setting Suse Facts
   set_fact:
-    _nfs_server_group: "nfsnobody"
-    _nfs_server_owner: "nfsnobody"
+    _nfs_server_group: "nobody"
+    _nfs_server_owner: "nobody"
     _nfs_server_service: "nfs-server"
   when: ( ansible_os_family == "Suse" or ansible_os_family == "SLE_HPC" )
