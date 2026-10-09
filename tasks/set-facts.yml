@@ -11,7 +11,7 @@
     _nfs_server_group: "nfsnobody"
     _nfs_server_owner: "nfsnobody"
     _nfs_server_service: "nfs-server"
-  when: ( ansible_os_family == "RedHat" and ansible_distribution_major_version <= "7" ) 
+  when: ( ansible_os_family == "RedHat" and ansible_distribution_major_version | int <= 7 )
 
 #https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index#the-nobody-user-replaces-nfsnobody_shells-and-command-line-tools
 - name: set-facts | Setting RedHat Facts post-8
@@ -19,7 +19,7 @@
     _nfs_server_group: "nobody"
     _nfs_server_owner: "nobody"
     _nfs_server_service: "nfs-server"
-  when: ( ansible_os_family == "RedHat" and ansible_distribution_major_version >= "8" )
+  when: ( ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 8 )
 
 - name: set-facts | Setting Suse Facts
   set_fact:
